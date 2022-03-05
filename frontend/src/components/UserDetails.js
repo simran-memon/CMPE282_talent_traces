@@ -18,10 +18,40 @@ class UserDetails extends React.Component {
         userExperience:'',
         userSkill:'',
         userOther:'',
-        returnMsg:''
+        returnMsg:'',
+        selectedFile: null,
+        selectedFiletoDisplay: null,
+        selectedFileName:'',
       }
     }
 
+    onFileUpload = (event) => {
+  
+        event.preventDefault();
+        const formData = new FormData();
+       
+    
+        if(this.state.selectedFile==null){
+          alert("Please select an image")
+          return
+        }
+    
+        formData.append('file', this.state.selectedFile);
+        formData.append('fileName', this.state.selectedFile.name)
+        formData.append('userEmail', this.state.userEmail);
+        
+        axios.post(urls.backendURL+'/uploadResume', formData, {
+           headers: {
+             'Content-Type': 'multipart/form-data'
+           }
+        }).then(response => response.data).then((data) => {
+            console.log(data)
+        });
+         
+        console.log("after uploading")
+        console.log(this.state.selectedFile.name)
+      };//end of onFileUpload
+      
 
     submitUserInfo=(event)=>{
         event.preventDefault();
@@ -90,7 +120,15 @@ class UserDetails extends React.Component {
     handleOtherChange = (e) => {
         this.setState({ userOther: e.target.value });
     }
-
+    handleChange(event) {
+        event.preventDefault();
+        this.setState({
+            selectedFiletoDisplay: URL.createObjectURL(event.target.files[0]),
+            selectedFile: event.target.files[0],
+            showMessage: false,
+            showPreview:true
+        })
+      };
 
     render() {
       return(<React.Fragment>
@@ -123,7 +161,23 @@ class UserDetails extends React.Component {
 
             </Form.Group>
             <Button  onClick={this.submitUserInfo} variant="dark">Submit</Button>                     </Card>
-                </Col>   
+                </Col> 
+                <Col>
+                <Row>
+                <Card style={{ width: '40rem' }}><Card.Body> 
+          <div className="col d-flex justify-content-center">
+            <Form.Group controlId="formFile" className="mb-3">
+                  <Form.Label>Select the file that you want to upload</Form.Label>
+                  <Form.Control type="file" onChange={this.handleChange}/>
+            </Form.Group>
+            <div>&nbsp;&nbsp;</div>
+            </div>
+           <div className="col d-flex justify-content-center">
+            <Button  onClick={this.onFileUpload} variant="dark">Save to Cloud</Button> 
+            </div>
+          </Card.Body></Card>
+                </Row>
+                </Col>  
                 </Row>
             </Container>
         </React.Fragment>)

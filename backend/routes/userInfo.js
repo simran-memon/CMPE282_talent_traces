@@ -3,10 +3,10 @@ var router = express.Router();
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "talent_database"
+    host: process.env.HOST,
+    user: process.env.DBUSERNAME,
+    password: process.env.DBPASSWORD,
+    database: process.env.DATABASE
   });
   
   con.connect(function(err) {
@@ -14,7 +14,7 @@ var con = mysql.createConnection({
     console.log("Connected!");
   });
 
-router.post('/', function (req, res) {
+router.post('/addUserInfo', function (req, res) {
    
     console.log("Reached the express code")
     console.log(req.body)
