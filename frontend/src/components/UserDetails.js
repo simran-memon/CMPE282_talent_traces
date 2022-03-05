@@ -23,18 +23,21 @@ class UserDetails extends React.Component {
         selectedFiletoDisplay: null,
         selectedFileName:'',
       }
+      this.handleChange = this.handleChange.bind(this)
     }
 
     onFileUpload = (event) => {
   
         event.preventDefault();
         const formData = new FormData();
-       
     
         if(this.state.selectedFile==null){
-          alert("Please select an image")
+          alert("Please select a file")
           return
         }
+
+        console.log("selected file: "+this.state.selectedFile.name)
+
     
         formData.append('file', this.state.selectedFile);
         formData.append('fileName', this.state.selectedFile.name)
@@ -56,19 +59,6 @@ class UserDetails extends React.Component {
     submitUserInfo=(event)=>{
         event.preventDefault();
 
-        const postData = {
-            userFirstName: this.state.userFirstName,
-            userLastName: this.state.userLastName,
-            userEmail: this.state.userEmail,
-            userContactNumber: this.state.userContactNumber,
-            userAddress: this.state.userAddress,
-            userDesignation: this.state.userDesignation,
-            userEducation: this.state.userEducation,
-            userExperience: this.state.userExperience,
-            userSkill: this.state.userSkill,
-            userOther: this.state.userOther,
-        }
-
         axios.post(urls.backendURL+'/addUserInfo',{
             userFirstName: this.state.userFirstName,
             userLastName: this.state.userLastName,
@@ -87,7 +77,6 @@ class UserDetails extends React.Component {
              returnMsg:''
           })
         });
-
     }
 
     handlefnameChange = (e) => {
@@ -124,9 +113,7 @@ class UserDetails extends React.Component {
         event.preventDefault();
         this.setState({
             selectedFiletoDisplay: URL.createObjectURL(event.target.files[0]),
-            selectedFile: event.target.files[0],
-            showMessage: false,
-            showPreview:true
+            selectedFile: event.target.files[0]
         })
       };
 

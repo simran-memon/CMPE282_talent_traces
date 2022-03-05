@@ -4,13 +4,11 @@ const aws = require('aws-sdk');
 const fs = require('fs');
 var path = require('path');
 
-const express = require('express')
-
 const app = express();
 app.use(express.json());
 
 var userInfo = require('./routes/userInfo')
-var userResume = require('./routes/userResume')
+var uploadResume = require('./routes/uploadResume')
 
   // CORS Headers => Required for cross-origin/ cross-server communication
   app.use((req, res, next) => {
@@ -24,7 +22,7 @@ var userResume = require('./routes/userResume')
   });
 
   app.use('/', userInfo);
-  app.use('/', userResume);
+  app.use('/', uploadResume);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

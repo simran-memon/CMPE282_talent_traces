@@ -37,7 +37,7 @@ router.post('/uploadResume', function (req, res) {
     return res.status(400).send('No files were uploaded.');
   }
 
-  let {filename, userEmail, trip} = req.body;
+  let {filename, userEmail} = req.body;
   let dateUploaded = new Date().toLocaleString()
   const fileContent = fs.createReadStream(req.files.file.tempFilePath);
 
@@ -49,7 +49,7 @@ router.post('/uploadResume', function (req, res) {
   console.log("EventId:" + req.body.eventId)
   console.log("mimetype: " + req.files.file.mimetype)
 
-  var userOnly =  username.split("@");
+  var userOnly =  userEmail.split("@");
  // var keyPath = userOnly[0]+"/"+trip+"/"+req.files.file.name
  var keyPath = userOnly[0]+"/"+req.files.file.name
 
