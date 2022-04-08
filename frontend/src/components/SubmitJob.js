@@ -10,12 +10,14 @@ const SubmitJob = () => {
     const [jobExperience, setJobExp] = useState(null)
     const [jobCompanyName, setCompName] = useState("")
     const [jobType, setJobType] = useState("")
+    const [postedBy, setPostedBy] = useState("")
+    const [postedOn, setPostedOn] = useState("")
 
 
     const postJob = (e) => {
         const data = { title: jobTitle, description: jobDescription, location: jobLocation,
                         salary: jobSalary, experience: jobExperience, company: jobCompanyName,
-                        type: jobType}
+                        type: jobType, postedby: postedBy, postedon:  postedOn}
         axios.post('/api/jobs/', data)
         .then(response => {
           console.log(response)
@@ -46,6 +48,12 @@ const SubmitJob = () => {
 
                 <input type="number" name="salary" placeholder="Job Salary"
                     onChange={e => setJobSalary(e.target.value)} />
+
+                <input type="text" name="postedby" placeholder="Posted By"
+                  onChange={e => setPostedBy(e.target.value)} />
+
+                <input type="text" name="postedon" placeholder="Posted On" 
+                  onChange={e => setPostedOn(e.target.value)} />
 
                 <button className="submitButton" type="submit">Submit</button>
 

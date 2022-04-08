@@ -14,11 +14,15 @@ class JobListings extends Component {
                   {job.company}
                 </CardHeader>
                 <CardText>
-                    {job.jobDescription}
+                    {job.title}
                     <br/>
                     {job.jobid}
                     <br/>
+                    {job.jobDescription}
+                    <br/>
                     {job.postedBy}
+                    <br/>
+                    {job.postedOn}
                     <br/>
                     {job.yoe}
                     <br/>
