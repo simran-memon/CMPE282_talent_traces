@@ -3,10 +3,14 @@ var router = express.Router();
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: process.env.HOST,
+    /*host: process.env.HOST,
     user: process.env.DBUSERNAME,
     password: process.env.DBPASSWORD,
-    database: process.env.DATABASE
+    database: process.env.DATABASE*/
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "talent_database"
   });
   
   con.connect(function(err) {

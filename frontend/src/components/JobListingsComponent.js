@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Card, CardHeader, CardText, CardBody, CardFooter, Button } from 'reactstrap';
 import axios from 'axios';
-import urls from "./utils"
+import urls from "./utils";
+import { JOBS } from "../shared/Jobs.js";
 class JobListings extends Component {
   
   constructor(props){
     super(props);
     this.state = {
-      userid:'3',
-      jobid:'3',
-      appliedOn:new Date().toISOString().substring(0,10)
+      userid:'',
+      jobid:'',
+      appliedOn:''
     }
   }
 
@@ -23,9 +24,9 @@ class JobListings extends Component {
     .then(response => response.data).then((data) => {
       console.log(data)
       this.setState({
-        userid:e.target.value,
-        jobid:e.target.value,
-        appliedOn:e.target.value
+        userid:localStorage.getItem('userid'),
+        jobid:JOBS.jobid,
+        appliedOn:new Date().toISOString().substring(0,10)
      })
      console.log("After set state")
   });
