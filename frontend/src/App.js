@@ -8,7 +8,13 @@ import JobListings from './components/JobListingsComponent';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import React, { Component,useState } from 'react';
 import Search from './components/SearchComponent';
-
+import HomePage from './components/Home';
+import {
+    BrowserRouter, Route,
+    
+    Routes,
+    Link
+  } from "react-router-dom";
 // function App() {
 //     return (
 //       <div className="App">
@@ -28,12 +34,20 @@ class App extends Component {
   render() {
       return (
           <div className="App">
-              <Navbar dark color="primary">
+              {/* <Navbar dark color="primary">
               <div className="container">
                   <NavbarBrand href="/"> View Job Details </NavbarBrand>
               </div>
               </Navbar>
-              <Search />
+              <Search /> */}
+              <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="search/" element={<Search />} />
+      </Routes>
+    </BrowserRouter>
+
+             
           </div>
  );
   }
