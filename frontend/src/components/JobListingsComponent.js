@@ -71,6 +71,8 @@ class JobListings extends Component {
     return(
         <div className="container">
   <div className="row">
+   {/* limeka */}
+  <Button onClick={()=>window.open("https://talenttracers.auth.us-west-2.amazoncognito.com/logout?client_id=3n3fsevut9rfrkegficjn5mlkf&response_type=token&logout_uri=http://localhost:3000/&response_type=token/logout", "_self")} >Logout</Button>
     {jobListings}
   </div>
 </div>

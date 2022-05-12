@@ -10,6 +10,10 @@ app.use(express.json());
 //var userInfo = require('./routes/userInfo')
 //var uploadResume = require('./routes/uploadResume')
 var apply = require('./routes/applyToJob')
+var userInfo = require('./routes/userInfo')
+var addJobInfo = require('./routes/addJob')
+var viewJobInfo = require('./routes/viewJob')
+var uploadResume = require('./routes/uploadResume')
 
   // CORS Headers => Required for cross-origin/ cross-server communication
   app.use((req, res, next) => {
@@ -25,6 +29,10 @@ var apply = require('./routes/applyToJob')
   //app.use('/', userInfo);
   //app.use('/', uploadResume);
   app.use('/', apply);
+  app.use('/', userInfo);
+  app.use('/', uploadResume);
+  app.use('/', addJobInfo);
+  app.use('/', viewJobInfo)
 
 const PORT = process.env.PORT || 6001;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
