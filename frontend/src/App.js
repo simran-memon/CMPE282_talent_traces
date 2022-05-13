@@ -4,7 +4,7 @@ import './shared/AddJob.css';
 // import React, {useState} from 'react';
 import axios from 'axios';
 // import SubmitJob from './components/SubmitJob';
-
+import AWSLogin from './components/AWSLogin';
 import Header from './components/Header';
 import JobListings from './components/JobListingsComponent';
 import { Navbar, NavbarBrand } from 'reactstrap';
@@ -46,7 +46,8 @@ class App extends Component {
     <BrowserRouter>
     
       <Routes>
-        <Route path="/" element={<HomePage />} />
+      {/* <Route path="/" element={<HomePage />} /> */}
+      <Route path="/" element={<AWSLogin />} />
         <Route path="search/" element={<JobListings />} />
         <Route path="profile/" element={<UserDetails />} />
       </Routes>

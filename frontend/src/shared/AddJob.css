@@ -90,3 +90,45 @@
   .jobCard:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
+
+  .submitJobContainer {
+    position:relative;
+    margin:20px 100px;
+    justify-content: space-around;
+    border-radius: 10px;
+  }
+
+  .addjob {
+    display:flex;
+    left:28%;
+    border-radius: 5px;
+    color:#61b0fb
+  }
+
+  .heading {
+    margin-top: 10px;
+    color:rgb(255, 255, 255);
+    height: 2em;
+    
+  }
+
+  .userContainer {
+    position:relative;
+    display: flex;
+    margin:20px 20px;
+    justify-content: space-around;
+    border-radius: 10px;
+  }
+
+  .heading1 {
+    margin-top: 10px;
+    color:rgb(255, 255, 255);
+    height: 2em;
+  }
+
+  .user{
+    display:flex;
+    left:8%;
+    border-radius: 5px;
+    color:#61b0fb
+  }

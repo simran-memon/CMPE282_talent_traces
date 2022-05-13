@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
@@ -45,7 +46,7 @@ var sql = "SELECT * FROM job";
             console.log(result);
 
             data = result;
-            
+
             console.log("data");
             console.log(data);
 
@@ -56,6 +57,7 @@ var sql = "SELECT * FROM job";
             if (err) throw err;
             console.log("Job fetched");
         });
+        
 
         
 });

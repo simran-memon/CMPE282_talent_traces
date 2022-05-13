@@ -3,6 +3,7 @@ const express = require('express')
 const aws = require('aws-sdk');
 const fs = require('fs');
 var path = require('path');
+var conUtils = require('./connection.js')
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ var userInfo = require('./routes/userInfo')
 var addJobInfo = require('./routes/addJob')
 var viewJobInfo = require('./routes/viewJob')
 var uploadResume = require('./routes/uploadResume')
+var fetchUser = require('./routes/fetchUser')
 
   // CORS Headers => Required for cross-origin/ cross-server communication
   app.use((req, res, next) => {
@@ -29,7 +31,8 @@ var uploadResume = require('./routes/uploadResume')
   app.use('/', userInfo);
   app.use('/', uploadResume);
   app.use('/', addJobInfo);
-  app.use('/', viewJobInfo)
+  app.use('/', viewJobInfo);
+  app.use('/', fetchUser);
 
 const PORT = process.env.PORT || 6001;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

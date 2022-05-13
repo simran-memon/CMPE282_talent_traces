@@ -1,67 +1,85 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import { Card, Form } from 'react-bootstrap';
+import urls from "./utils"
+import { Authenticator } from '@aws-amplify/ui-react';
 
 const SubmitJob = () => {
 
     const [jobTitle, setJobTitle] = useState("")
-    const [jobDescription, setJobDescription] = useState("")
+    const [jobDesc, setJobDescription] = useState("")
     const [jobLocation, setJobLocation] = useState("")
     const [jobSalary, setJobSalary] = useState(null)
-    const [jobExperience, setJobExp] = useState(null)
-    const [jobCompanyName, setCompName] = useState("")
+    const [yoe, setJobExp] = useState(null)
+    const [company, setCompName] = useState("")
     const [jobType, setJobType] = useState("")
     const [postedBy, setPostedBy] = useState("")
     const [postedOn, setPostedOn] = useState("")
 
 
     const postJob = (e) => {
-        const data = { title: jobTitle, description: jobDescription, location: jobLocation,
-                        salary: jobSalary, experience: jobExperience, company: jobCompanyName,
-                        type: jobType, postedby: postedBy, postedon:  postedOn}
+      e.preventDefault();
+        const data = { jobTitle: jobTitle, jobDesc: jobDesc, jobLocation: jobLocation,
+                        jobSalary: jobSalary, yoe: yoe, company: company,
+                        jobType: jobType, postedBy: postedBy, postedOn:  postedOn}
+        console.log(data)
 
-        axios.post('/api/jobs/', data)
+        axios.post(urls.backendURL+'/addJob', data)
         .then(response => {
           console.log(response)
         })
+
+        alert("Job Added")
     }
 
     return(
-        <div className="submitJobContainer">
-            <h3>Submit a Job</h3>
-            <form className="formContainer" onSubmit={postJob}>
-                <input type="text" name="title" placeholder="Job Title" 
+      <div className="submitJobContainer">
+        
+          <Card className= "addjob" style={{ width: '35rem', backgroundColor:'white', borderRadius:"10px"}}>
+              <Form.Group controlId="formFile" className="mb-3">
+              <Card.Header style={{backgroundColor:"#61b0fb"}}>
+              <h3 className="heading">Add New Job</h3>
+              </Card.Header><br/>
+                  <Form.Control size="md" type="text" name="jobTitle" placeholder="Job Title" 
                   onChange={e => setJobTitle(e.target.value)} />
-
-                <input type="text" name="description" placeholder="Job Description"
-                    onChange={e => setJobDescription(e.target.value)} />
-
-                <input type="number" name="experience" placeholder="Year of Experience" 
+                  <br/>
+                  <Form.Control size="md" type="text" name="jobDesc" placeholder="Job Description"
+                    onChange={e => setJobDescription(e.target.value)}/>
+                    <br/>
+                  <Form.Control size="md" type="text" name="yoe" placeholder="Year of Experience" 
                   onChange={e => setJobExp(e.target.value)} />
-
-                <input type="text" name="company" placeholder="Company Name" 
+                  <br/>
+                  <Form.Control size="md" type="text" name="company" placeholder="Company Name" 
                   onChange={e => setCompName(e.target.value)} />
-
-                <input type="text" name="location" placeholder="Job Location"
+                  <br/>
+                  <Form.Control size="md" type="text"  name="jobLocation" placeholder="Job Location"
                     onChange={e => setJobLocation(e.target.value)} />
-
-                <input type="text" name="type" placeholder="Job Type: InternShip/ Full-time/ Part-time" 
-                  onChange={e => setJobType(e.target.value)} />
-
-                <input type="number" name="salary" placeholder="Job Salary"
+                    <br/>
+                  <Form.Control size="md" type="text" name="jobType" placeholder="Job Type: InternShip/ Full-time/ Part-time" 
+                  onChange={e => setJobType(e.target.value)}/>
+                  <br/>
+                  <Form.Control size="md" type="text" name="jobSalary" placeholder="Job Salary"
                     onChange={e => setJobSalary(e.target.value)} />
-
-                <input type="text" name="postedby" placeholder="Posted By"
-                  onChange={e => setPostedBy(e.target.value)} />
-
-                <input type="text" name="postedon" placeholder="Posted On" 
-                  onChange={e => setPostedOn(e.target.value)} />
-
-                <button className="submitButton" type="submit">Submit</button>
-      <Button onClick={()=>window.open("https://talenttracers.auth.us-west-2.amazoncognito.com/logout?client_id=3n3fsevut9rfrkegficjn5mlkf&response_type=token&logout_uri=http://localhost:3000/&response_type=token/logout", "_self")} >Logout</Button>
-            </form>
-        </div>
-    )
+                    <br/>
+                  <Form.Control size="md" type="text" name="postedBy" placeholder="Posted By"
+                  onChange={e => setPostedBy(e.target.value)}  />
+                  <br/>
+                  <Form.Control size="md" type="text" name="postedOn" placeholder="Posted On" 
+                  onChange={e => setPostedOn(e.target.value)}/>
+                  <Card.Footer >
+                  <Button  onClick={postJob} variant="dark">Add Job</Button>
+                </Card.Footer>
+            </Form.Group>
+            
+          </Card>
+       
+    <Authenticator>
+      {({ signOut, user }) => (
+     <button onClick={signOut}>Sign out</button>
+      )}
+    </Authenticator>
+        </div>    )
 }
 
 export default SubmitJob

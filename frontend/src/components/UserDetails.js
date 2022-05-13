@@ -3,12 +3,21 @@ import { Container, Card,Form,Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios'
 import urls from "./utils"
 import Header from './Header';
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+import '../shared/AddJob.css';
+
+
+Auth.configure(awsconfig);
+
+var em =''
 class UserDetails extends React.Component {
 
     constructor(props){
       super(props)
+
       this.state = {
-        userId:'',
+        userid:'',
         userFirstName:'',
         userLastName:'',
         userEmail:'',
@@ -19,6 +28,7 @@ class UserDetails extends React.Component {
         userExperience:'',
         userSkill:'',
         userOther:'',
+        resumeLink:'',
         returnMsg:'',
         selectedFile: null,
         selectedFiletoDisplay: null,
@@ -27,9 +37,66 @@ class UserDetails extends React.Component {
       this.handleChange = this.handleChange.bind(this)
     }
 
+    componentDidMount(props){
+
+        var useremail = ''
+        var email = ''
+    
+    
+    Auth.currentAuthenticatedUser().then(function(result){
+            console.log("In Userdetails")
+            console.log(result.attributes.email)
+            em = result.attributes.email
+             console.log("set to em")
+             console.log(em)
+             console.log("em outside "+em)
+             localStorage.setItem("email", em);
+      
+          });
+    
+        if(em=='' || em==null) {
+    
+        Auth.currentSession().then(function(data) {
+            console.log("in session code...")
+            let idToken = data.getIdToken();
+            console.dir(idToken);
+            email = idToken.payload.email;
+            console.log("print email....")
+
+            console.log(email);
+            em = email;
+            console.log("em "+ em);
+
+            this.setState({userEmail:email})
+        });
+       }
+
+
+
+        axios.post(urls.backendURL+'/fetchUser',{
+            userEmail: localStorage.getItem("email"),
+        })
+        .then(response => response.data).then((data) => {
+
+            this.setState({
+                userId:data.result[0].userid,
+                userFirstName:data.result[0].userFirstName,
+                userLastName:data.result[0].userLastName,
+                userEmail:data.result[0].userEmail,
+                userContactNumber:data.result[0].userContactNumber,
+                userDesignation:data.result[0].userDesignation,
+                userAddress:data.result[0].userAddress,
+                userEducation:data.result[0].userEducation,
+                userExperience:data.result[0].userExperience,
+                userSkill:data.result[0].userSkill,
+                userOther:data.result[0].userOther,
+                resumeLink:data.result[0].resumeLink,
+              })
+        }); 
+    }
+
     onFileUpload = (event) => {
-  
-        event.preventDefault();
+        
         const formData = new FormData();
     
         if(this.state.selectedFile==null){
@@ -39,11 +106,12 @@ class UserDetails extends React.Component {
 
         console.log("selected file: "+this.state.selectedFile.name)
 
-    
         formData.append('file', this.state.selectedFile);
         formData.append('fileName', this.state.selectedFile.name)
-        formData.append('userEmail', this.state.userEmail);
+       // formData.append('userEmail', localStorage.getItem("email"));
         
+        console.log("formData email"+JSON.stringify(formData))
+
         axios.post(urls.backendURL+'/uploadResume', formData, {
            headers: {
              'Content-Type': 'multipart/form-data'
@@ -51,11 +119,12 @@ class UserDetails extends React.Component {
         }).then(response => response.data).then((data) => {
             console.log(data)
         });
+
+        alert("Resume saved to cloud storage")
          
         console.log("after uploading")
         console.log(this.state.selectedFile.name)
-      };//end of onFileUpload
-      
+      };
 
     submitUserInfo=(event)=>{
         event.preventDefault();
@@ -63,7 +132,7 @@ class UserDetails extends React.Component {
         axios.post(urls.backendURL+'/addUserInfo',{
             userFirstName: this.state.userFirstName,
             userLastName: this.state.userLastName,
-            userEmail: this.state.userEmail,
+            userEmail: em,
             userContactNumber: this.state.userContactNumber,
             userAddress: this.state.userAddress,
             userDesignation: this.state.userDesignation,
@@ -78,6 +147,8 @@ class UserDetails extends React.Component {
              returnMsg:''
           })
         });
+
+        alert("Profile saved")
     }
 
     handlefnameChange = (e) => {
@@ -120,56 +191,77 @@ class UserDetails extends React.Component {
 
     render() {
       return(<React.Fragment>
-          <Header></Header>
-            <Container fluid>
-                <Row>
-                <Col>
-                    <h4>Profile Information</h4>
-                    <Card style={{ width: '30rem' }}>
-            <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Control size="md" type="text" value={this.state.userFirstName} 
-                  placeholder="First name" onChange={this.handlefnameChange} />
-                  <Form.Control size="md" type="text" value={this.state.userLastName} 
-                  placeholder="Last name" onChange={this.handlelnameChange} />
-                  <Form.Control size="md" type="text" value={this.state.userEmail} 
-                  placeholder="Email address" onChange={this.handleEmailChange} />
-                  <Form.Control size="md" type="text" value={this.state.userContactNumber} 
-                  placeholder="Contact number" onChange={this.handleContactChange} />
-                  <Form.Control size="md" type="text" value={this.state.userAddress} 
-                  placeholder="Address" onChange={this.handleAddrChange} />
-                  <Form.Control size="md" type="text" value={this.state.userDesignation} 
-                  placeholder="Designation" onChange={this.handleDesgChange} />
-                  <Form.Control size="md" type="text" value={this.state.userEducation} 
-                  placeholder="Education" onChange={this.handleEduChange} />
-                  <Form.Control size="md" type="text" value={this.state.userExperience} 
-                  placeholder="Work experience" onChange={this.handleWorkExpChange} />
-                  <Form.Control size="md" type="text" value={this.state.userSkill} 
-                  placeholder="Skills" onChange={this.handleSkillChange} />
-                  <Form.Control size="md" type="text" value={this.state.userOther} 
-                  placeholder="Others" onChange={this.handleOtherChange} />
-
-            </Form.Group>
-            <Button  onClick={this.submitUserInfo} variant="dark">Submit</Button>                     </Card>
-                </Col> 
-                <Col>
-                <Row>
-                <Card style={{ width: '40rem' }}><Card.Body> 
-          <div className="col d-flex justify-content-center">
-            <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Select the file that you want to upload</Form.Label>
-                  <Form.Control type="file" onChange={this.handleChange}/>
-            </Form.Group>
-            <div>&nbsp;&nbsp;</div>
-            </div>
-           <div className="col d-flex justify-content-center">
-            <Button  onClick={this.onFileUpload} variant="dark">Save to Cloud</Button> 
-            </div>
-          </Card.Body></Card>
-                </Row>
-                </Col>  
-                </Row>
-            </Container>
-        </React.Fragment>)
+        <Header></Header>
+          <Container fluid>
+              <Row>
+              <Col>
+              <div className="userContainer"> 
+               <Card className= "user" style={{ width: '35rem' }}>
+               <Card.Header style={{backgroundColor:"#61b0fb"}}>
+                  <h4 className="heading1">Profile Information {em}</h4>
+               </Card.Header>
+               <br/>
+               <Form.Group controlId="formFile" className="mb-3">
+                <Form.Control size="md" type="text" value={this.state.userFirstName} 
+                placeholder="First name" onChange={this.handlefnameChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userLastName} 
+                placeholder="Last name" onChange={this.handlelnameChange} />
+                <br/>
+               {/* <Form.Control size="md" type="text" value={this.state.userEmail} 
+                placeholder="Email address" onChange={this.handleEmailChange} />
+                <br/>*/}
+                <Form.Control size="md" type="text" value={this.state.userContactNumber} 
+                placeholder="Contact number" onChange={this.handleContactChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userAddress} 
+                placeholder="Address" onChange={this.handleAddrChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userDesignation} 
+                placeholder="Designation" onChange={this.handleDesgChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userEducation} 
+                placeholder="Education" onChange={this.handleEduChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userExperience} 
+                placeholder="Work experience" onChange={this.handleWorkExpChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userSkill} 
+                placeholder="Skills" onChange={this.handleSkillChange} />
+                <br/>
+                <Form.Control size="md" type="text" value={this.state.userOther} 
+                placeholder="Others" onChange={this.handleOtherChange} />
+          </Form.Group>
+          <Card.Footer>
+          <Button  className="submitButton" style={{backgroundColor:"#61b0fb", border:"#0c88ed", color:"white"}} onClick={this.submitUserInfo}>Submit</Button>     
+          </Card.Footer>                
+          </Card>
+          </div>
+          </Col> 
+          <Col>
+          <Row>
+              
+          <Card style={{ width: '35rem', top:"15em", left:"20px"}}>
+          <Card.Body> 
+        <div className="col d-flex justify-content-center">
+          <Form.Group controlId="formFile" className="mb-3">
+                <Form.Label style={{color:"#61b0fb"}}>Please upload your latest Resume!!</Form.Label>
+                <br/><br/>
+                <Form.Control type="file" onChange={this.handleChange}/>
+          </Form.Group>
+          <div>&nbsp;&nbsp;</div>
+          </div>
+         <div className="col d-flex justify-content-center">
+          <Button  className="submitButton" style={{backgroundColor:"#61b0fb", border:"#0c88ed", color:"white", width:"10em"}} onClick={this.onFileUpload}>Save to Cloud</Button> 
+          </div>
+        </Card.Body>
+        </Card>
+              </Row>
+              </Col>  
+              </Row>
+          </Container>
+      </React.Fragment>
+)
     }
 }
 

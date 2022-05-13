@@ -5,12 +5,14 @@ import urls from "./utils";
 import '../App.css';
 import Header from './Header';
 import SubmitJob from './SubmitJob';
-// import Amplify, { Auth } from 'aws-amplify';
-// import awsconfig from './aws-exports';
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+import '../shared/AddJob.css';
 
-// Amplify.configure(awsconfig);
+Auth.configure(awsconfig);
 
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+var em =''
+
 class JobListings extends Component {
   
   constructor(props){
@@ -26,18 +28,48 @@ class JobListings extends Component {
   }
 
   componentDidMount(){
-    axios.post(urls.backendURL+'/viewJob', {
-    }).then(response => response.data).then((data) => {
-        this.setState({jobs:data.data});
-    });
-  }
+    if(this.state.isAdmin==false){
+      
+      axios.post(urls.backendURL+'/viewJob', {
+      }).then(response => response.data).then((data) => {
+          this.setState({jobs:data.data});
+      });
+    }
 
+    var useremail = ''
+    var email = ''
+
+
+  Auth.currentAuthenticatedUser().then(function(result){
+        console.log("In app.js")
+        console.log(result.attributes.email)
+        em = result.attributes.email
+         console.log("set to em")
+         console.log(em)
+      });
+
+    if(em=='' || em==null) {
+
+    Auth.currentSession().then(function(data) {
+        console.log("in session code...")
+        let idToken = data.getIdToken();
+        console.dir(idToken);
+        email = idToken.payload.email;
+        console.log("print email....")
+
+        console.log(email);
+        em = email;
+        console.log(em);
+    });
+   }
+
+  }
 
   applyToJob = (e, index) => {
 
     this.setState({ jobid: index });
 
-     axios.post(urls.backendURL+'/apply', { userid: "1",
+     axios.post(urls.backendURL+'/apply', { userid: localStorage.getItem("email"),
      jobid: index, 
      appliedOn: new Date().toISOString().substring(0,10)})
      .then(response => response.data).then((data) => {
