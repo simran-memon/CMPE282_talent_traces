@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-oktacognito-dev-173859-authRole",
+      "UnauthRoleArn": "arn:aws:iam::930136857958:role/amplify-oktacognito-dev-173859-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::930136857958:role/amplify-oktacognito-dev-173859-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-oktacognito-dev-173859-deployment",
+      "UnauthRoleName": "amplify-oktacognito-dev-173859-unauthRole",
+      "StackName": "amplify-oktacognito-dev-173859",
+      "StackId": "arn:aws:cloudformation:us-west-2:930136857958:stack/amplify-oktacognito-dev-173859/143d5660-d255-11ec-a4eb-02ef29eca5d7",
+      "AmplifyAppId": "d18rahl09695e2"
+    },
+    "categories": {
+      "auth": {
+        "oktacognitob804e7ae": {}
+      }
+    }
+  }
+}
