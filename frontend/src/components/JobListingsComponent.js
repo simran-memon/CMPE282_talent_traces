@@ -5,15 +5,14 @@ import urls from "./utils";
 import '../App.css';
 import Header from './Header';
 import SubmitJob from './SubmitJob';
-
+import jwt_decode from "jwt-decode";
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 
 Auth.configure(awsconfig);
 
-var em =''
-
+var em ='';
 class JobListings extends Component {
   
   constructor(props){
@@ -29,34 +28,47 @@ class JobListings extends Component {
   }
 
   componentDidMount(){
-    var useremail = ''
-    var email = ''
+
+// url= window.location.hash;
+// console.log("href val is", url);
+// var access_token = new URLSearchParams(url.search).get('id_token');
+// console.log("access token is ", access_token);
+var access_token = new URLSearchParams(window.location.hash).get('access_token');
+console.log("access token is ", access_token);
+var decoded = jwt_decode(access_token);
+console.log(decoded.username);
+
+localStorage.setItem("user",decoded.username);
+console.log("local storage user", localStorage.getItem("user"));
+
+//     var useremail = ''
+//     var email = ''
 
 
-Auth.currentAuthenticatedUser().then(function(result){
-        console.log("In app.js")
-        console.log(result.attributes.email)
-        em = result.attributes.email
-         console.log("set to em")
-         console.log(em)
-      });
+// Auth.currentAuthenticatedUser().then(function(result){
+//         console.log("In app.js")
+//         console.log(result.attributes.email)
+//         em = result.attributes.email
+//          console.log("set to em")
+//          console.log(em)
+//       });
    
-    if(em=='' || em==null) {
+//     if(em=='' || em==null) {
 
-    Auth.currentSession().then(function(data) {
-        console.log("in session code...")
-        let idToken = data.getIdToken();
-        console.dir(idToken);
-        email = idToken.payload.email;
-        console.log("print email....")
+//     Auth.currentSession().then(function(data) {
+//         console.log("in session code...")
+//         let idToken = data.getIdToken();
+//         console.dir(idToken);
+//         email = idToken.payload.email;
+//         console.log("print email....")
 
-        console.log(email);
-        em = email;
-        console.log(em);
+//         console.log(email);
+//         em = email;
+//         console.log(em);
         
  
-    });
-   }
+//     });
+//    }
 
 
 
@@ -92,6 +104,20 @@ Auth.currentAuthenticatedUser().then(function(result){
       ):(
         <div>
     <Header></Header>
+
+     <div>
+       User info 
+     </div>
+
+
+
+
+
+
+
+
+
+
           {this.state.jobs.map((job,index) => (
             
             <Card className='card-style'>

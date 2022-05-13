@@ -53,8 +53,8 @@ class App extends Component {
     
       <Routes>
    
-        {/* <Route path="/" element={<HomePage />} /> */}
-        <Route path="/" element={<AWSLogin/>} />
+        <Route path="/" element={<HomePage />} />
+        {/* <Route path="/" element={<AWSLogin/>} /> */}
         <Route path="search/" element={<JobListings />} />
         <Route path="profile/" element={<UserDetails />} />
     
