@@ -5,12 +5,17 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { Button, Input, Label } from 'reactstrap';
 import { JOBS } from '../shared/Jobs';
+import { Input, Label } from 'reactstrap';
 import JobListings from './JobListingsComponent';
+import axios from 'axios'
+import urls from "./utils"
 
 class Search extends Component {
   constructor(props){
     super(props);
-    this.state = {jobs: JOBS}
+    this.state = {
+      jobs:[]
+    }
   }
  
 
@@ -27,6 +32,12 @@ class Search extends Component {
 //     //   console.log(response)
 //     // })
 // }
+
+  componentDidMount(){
+
+
+  }
+
 
   render(){
     return(

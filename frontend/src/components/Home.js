@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Container, Card,Form,Button, Col, Row } from 'react-bootstrap';
+import Header from './Header';
 
 
 class HomePage extends React.Component {
@@ -11,7 +12,7 @@ class HomePage extends React.Component {
             <Container fluid>
                 <Row>
                 <Col>
-                    <h4>Home Page</h4>                    
+                    <h4>Talent Traces</h4>                    
                 </Col> 
                 </Row>
                 <Row>

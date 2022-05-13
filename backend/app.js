@@ -7,6 +7,7 @@ var path = require('path');
 const app = express();
 app.use(express.json());
 
+var apply = require('./routes/applyToJob')
 var userInfo = require('./routes/userInfo')
 var addJobInfo = require('./routes/addJob')
 var viewJobInfo = require('./routes/viewJob')
@@ -23,12 +24,14 @@ var uploadResume = require('./routes/uploadResume')
     next();
   });
 
+
+  app.use('/', apply);
   app.use('/', userInfo);
   app.use('/', uploadResume);
   app.use('/', addJobInfo);
   app.use('/', viewJobInfo)
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6001;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
