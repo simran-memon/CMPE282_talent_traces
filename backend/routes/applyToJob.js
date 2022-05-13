@@ -3,14 +3,10 @@ var router = express.Router();
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    /*host: process.env.HOST,
+    host: process.env.HOST,
     user: process.env.DBUSERNAME,
     password: process.env.DBPASSWORD,
-    database: process.env.DATABASE*/
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "talent_database"
+    database: process.env.DATABASE
   });
   
   con.connect(function(err) {
@@ -18,9 +14,11 @@ var con = mysql.createConnection({
     console.log("Connected!");
   });
 
-  router.post("/apply", async function(req, res){
+  router.post("/apply", function(req, res){
+
     console.log("Reached the express code")
     console.log(req.body)
+    
     let{userid, jobid, appliedOn} = req.body;
     var jobApplyStatus= false, message="Not Applied";
     

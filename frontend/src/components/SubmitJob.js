@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 const SubmitJob = () => {
 
@@ -18,6 +19,7 @@ const SubmitJob = () => {
         const data = { title: jobTitle, description: jobDescription, location: jobLocation,
                         salary: jobSalary, experience: jobExperience, company: jobCompanyName,
                         type: jobType, postedby: postedBy, postedon:  postedOn}
+
         axios.post('/api/jobs/', data)
         .then(response => {
           console.log(response)
@@ -56,7 +58,7 @@ const SubmitJob = () => {
                   onChange={e => setPostedOn(e.target.value)} />
 
                 <button className="submitButton" type="submit">Submit</button>
-
+      <Button onClick={()=>window.open("https://talenttracers.auth.us-west-2.amazoncognito.com/logout?client_id=3n3fsevut9rfrkegficjn5mlkf&response_type=token&logout_uri=http://localhost:3000/&response_type=token/logout", "_self")} >Logout</Button>
             </form>
         </div>
     )
