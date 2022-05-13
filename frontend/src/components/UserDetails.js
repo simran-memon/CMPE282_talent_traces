@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Card,Form,Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios'
 import urls from "./utils"
+import Header from './Header';
 class UserDetails extends React.Component {
 
     constructor(props){
@@ -119,6 +120,7 @@ class UserDetails extends React.Component {
 
     render() {
       return(<React.Fragment>
+          <Header></Header>
             <Container fluid>
                 <Row>
                 <Col>

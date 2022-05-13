@@ -37,3 +37,12 @@
   }
 }
 
+.card-style{
+  display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+    grid-gap: 2rem;
+    margin-block: 2rem;
+    padding: 0 1rem;
+    justify-items: center;
+    align-items: center;
+}

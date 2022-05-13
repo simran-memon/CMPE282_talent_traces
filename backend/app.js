@@ -7,8 +7,6 @@ var path = require('path');
 const app = express();
 app.use(express.json());
 
-//var userInfo = require('./routes/userInfo')
-//var uploadResume = require('./routes/uploadResume')
 var apply = require('./routes/applyToJob')
 var userInfo = require('./routes/userInfo')
 var addJobInfo = require('./routes/addJob')
@@ -26,8 +24,7 @@ var uploadResume = require('./routes/uploadResume')
     next();
   });
 
-  //app.use('/', userInfo);
-  //app.use('/', uploadResume);
+
   app.use('/', apply);
   app.use('/', userInfo);
   app.use('/', uploadResume);
