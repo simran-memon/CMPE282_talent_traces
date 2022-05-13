@@ -5,12 +5,15 @@ import urls from "./utils";
 import '../App.css';
 import Header from './Header';
 import SubmitJob from './SubmitJob';
-// import Amplify, { Auth } from 'aws-amplify';
-// import awsconfig from './aws-exports';
 
-// Amplify.configure(awsconfig);
 
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+
+Auth.configure(awsconfig);
+
+var em =''
+
 class JobListings extends Component {
   
   constructor(props){
@@ -26,6 +29,40 @@ class JobListings extends Component {
   }
 
   componentDidMount(){
+    var useremail = ''
+    var email = ''
+
+
+Auth.currentAuthenticatedUser().then(function(result){
+        console.log("In app.js")
+        console.log(result.attributes.email)
+        em = result.attributes.email
+         console.log("set to em")
+         console.log(em)
+      });
+   
+    if(em=='' || em==null) {
+
+    Auth.currentSession().then(function(data) {
+        console.log("in session code...")
+        let idToken = data.getIdToken();
+        console.dir(idToken);
+        email = idToken.payload.email;
+        console.log("print email....")
+
+        console.log(email);
+        em = email;
+        console.log(em);
+        
+ 
+    });
+   }
+
+
+
+
+
+
     axios.post(urls.backendURL+'/viewJob', {
     }).then(response => response.data).then((data) => {
         this.setState({jobs:data.data});

@@ -3,6 +3,7 @@ import { Container, Card,Form,Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios'
 import urls from "./utils"
 import Header from './Header';
+
 class UserDetails extends React.Component {
 
     constructor(props){
@@ -123,6 +124,7 @@ class UserDetails extends React.Component {
           <Header></Header>
             <Container fluid>
                 <Row>
+                
                 <Col>
                     <h4>Profile Information</h4>
                     <Card style={{ width: '30rem' }}>

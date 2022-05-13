@@ -11,6 +11,7 @@ import { Navbar, NavbarBrand } from 'reactstrap';
 import React, { Component,useState } from 'react';
 import Search from './components/SearchComponent';
 import HomePage from './components/Home';
+import AWSLogin from './components/AWSLogin';
 import {
     BrowserRouter, Route,
     
@@ -18,6 +19,10 @@ import {
     Link
   } from "react-router-dom";
 import UserDetails from './components/UserDetails';
+
+
+
+
 // function App() {
 //     return (
 //       <div className="App">
@@ -43,12 +48,16 @@ class App extends Component {
               </div>
               </Navbar>
               <Search /> */}
+            
     <BrowserRouter>
     
       <Routes>
-        <Route path="/" element={<HomePage />} />
+   
+        {/* <Route path="/" element={<HomePage />} /> */}
+        <Route path="/" element={<AWSLogin/>} />
         <Route path="search/" element={<JobListings />} />
         <Route path="profile/" element={<UserDetails />} />
+    
       </Routes>
     </BrowserRouter>
 
